@@ -28,10 +28,10 @@ while ($row = $result->fetch_assoc()) {
 		$data .= "<div class=\"description\">{$row["summary"]}</div>";
 	}
 
-	$data .= "<div class=\"service\">{$row["serviceName"]} " . date("d.m.Y H:i", strtotime($row["created"])) . " {$row["timezone"]}</div>";
+	$data .= "<div class=\"service\">{$row["serviceName"]} " . date("d.m.Y H:i", strtotime($row["created"])) . "</div>";
 
 	$data .= "</small></div>";
 }
 $data .= "</ul>";
 
-$content = "<div id=\"header\" role=\"banner\"><h1>$title</h1><div id=\"description\">$summary</div></div>$data";
+$content = "<div id=\"header\" role=\"banner\"><h1>$title</h1><div id=\"description\">$summary</div><div id='author'><a href='https://twitter.com/_timoanttila' rel='author'>@_timoanttila</a></div></div></div>$data";
