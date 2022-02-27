@@ -7,15 +7,6 @@ $result = db($query);
 if ($result->num_rows == 0) {
 	header("HTTP/1.1 404 Not Found");
 	die();
-} else {
-	/*
-	$cache = 604800;
-	header("Pragma: Cache");
-	header("Expires: $cache");
-	header("Cache-Control: must-revalidate, max-age=$cache, s-maxage=$cache");
-	header("Cache-Control: max-age=$cache");
-	header("HTTP/1.1 200 OK");
-	*/
 }
 
 // Open the results one by one
@@ -28,7 +19,7 @@ while ($row = $result->fetch_assoc()) {
 		$data .= "<div class=\"description\">{$row["summary"]}</div>";
 	}
 
-	$data .= "<div class=\"service\">{$row["serviceName"]} " . date("d.m.Y H:i", strtotime($row["created"])) . "</div>";
+	$data .= "<div class=\"service\" data-nosnippet><small>{$row["serviceName"]} " . date("d.m.Y H:i", strtotime($row["created"])) . "</small></div>";
 
 	$data .= "</small></div>";
 }

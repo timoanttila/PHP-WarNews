@@ -1,7 +1,6 @@
 <?php
-/*
 // Set ETag header
-$etag = 1645392468;
+$etag = "2022-02-28T00:37:00";
 header("ETag: $etag");
 if (
 	isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
@@ -10,12 +9,11 @@ if (
 	header("HTTP/1.1 304 Not Modified");
 	die();
 }
-*/
 
 if (empty($_GET["lang"]) || strip_tags($_GET["lang"]) == "en") {
 	$lang = "en";
 	$locale = "en_US";
-	$site = $title = "War News";
+	$title = "War News";
 	$summary = "Comprehensive news coverage in English about the war and its effects. The list is updated daily.";
 	$listAria = "Current war-related news";
 	$langChange = [
@@ -25,8 +23,8 @@ if (empty($_GET["lang"]) || strip_tags($_GET["lang"]) == "en") {
 } else {
 	$lang = "fi";
 	$locale = "fi_FI";
-	$site = $title = "Sotauutisia";
-	$summary = "Kattava uutislista sodasta ja sen vaikutuksista suomeksi ja englanniksi. Listaa päivitetään päivittäin.";
+	$title = "Sotauutisia";
+	$summary = "Kattava uutislista sodista ja niiden vaikutuksesta turvallisuuteen ja talouteen Suomessa ja maailmalla. Listaa päivitetään päivittäin.";
 	$listAria = "Ajankohtaisia sotaan liittyviä uutisia";
 	$langChange = [
 		"name" => "en",
@@ -67,7 +65,9 @@ if (!empty($tag)) {
 			box-sizing: border-box;
 			overflow-x: hidden;
 			font: 400 16px Tahoma;
-			line-height: 1.5
+			line-height: 1.5;
+			background-color: #f0f0f0;
+			color: rgba(0 0 0 / 87%)
 		}
 
 		h1,
@@ -130,10 +130,6 @@ if (!empty($tag)) {
 			text-decoration: none
 		}
 
-		body {
-			color: rgba(0 0 0 / 87%)
-		}
-
 		img {
 			width: 100%;
 			height: auto
@@ -144,7 +140,7 @@ if (!empty($tag)) {
 		}
 
 		.service {
-			margin-top: 5px;
+			margin-top: 2px;
 			color: rgba(0 0 0 / 60%)
 		}
 
@@ -181,7 +177,7 @@ if (!empty($tag)) {
 	<link rel="alternate" href="<?= $url ?>" hreflang="x-default" />
 	<link rel="alternate" hreflang="fi" href="<?= $url ?>?lang=fi" />
 	<link rel="alternate" hreflang="en" href="<?= $url ?>" />
-	<meta name="og:site_name" property="og:site_name" content="<?= $site ?>" />
+	<meta name="og:site_name" property="og:site_name" content="<?= $title ?>" />
 	<meta name="canoncial" property="og:url" content="<?= $url ?>" />
 	<meta name="twitter:title" property="og:title" content="<?= $title ?>" />
 	<meta name="twitter:description" property="og:description" content="<?= $summary ?>" />
