@@ -10,19 +10,19 @@ if ($result->num_rows == 0) {
 }
 
 // Open the results one by one
-$data = "<ul id=\"news\" aria-label=\"$listAria\">";
+$data = "<ul id='news' aria-label='$listAria'>";
 while ($row = $result->fetch_assoc()) {
 
-	$data .= "<li role=\"none\"><a href=\"{$row["website"]}\" hreflang=\"{$row["langAbbr"]}\" role=\"listitem\"><strong>{$row["title"]}</strong></a>";
+	$data .= "<li role='none'><a href='{$row["website"]}' hreflang='{$row["langAbbr"]}' role='listitem' rel='nofollow'><strong>{$row["title"]}</strong></a>";
 
 	if (!empty($row["summary"])) {
-		$data .= "<div class=\"description\">{$row["summary"]}</div>";
+		$data .= "<div class='description'>{$row["summary"]}</div>";
 	}
 
-	$data .= "<div class=\"service\" data-nosnippet><small>{$row["serviceName"]} " . date("d.m.Y H:i", strtotime($row["created"])) . "</small></div>";
+	$data .= "<div class='service' data-nosnippet><small>{$row["serviceName"]} " . date("d.m.Y H:i", strtotime($row["created"])) . "</small></div>";
 
 	$data .= "</small></div>";
 }
 $data .= "</ul>";
 
-$content = "<div id=\"header\" role=\"banner\"><h1>$title</h1><div id=\"description\">$summary</div><div id='author'><a href='https://twitter.com/_timoanttila' rel='author'>@_timoanttila</a></div></div></div>$data";
+$content = "<div id='header' role='banner'><h1>$title</h1><div id='description'>$summary</div><div id='author'><a href='https://twitter.com/_timoanttila' rel='author'>@_timoanttila</a></div></div></div>$data";

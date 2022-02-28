@@ -1,15 +1,4 @@
 <?php
-// Set ETag header
-$etag = "2022-02-28T00:37:00";
-header("ETag: $etag");
-if (
-	isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-	$_SERVER['HTTP_IF_NONE_MATCH'] == $etag
-) {
-	header("HTTP/1.1 304 Not Modified");
-	die();
-}
-
 if (empty($_GET["lang"]) || strip_tags($_GET["lang"]) == "en") {
 	$lang = "en";
 	$locale = "en_US";
