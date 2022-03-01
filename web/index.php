@@ -193,6 +193,7 @@ if (!empty($tag)) {
 	<meta name="msapplication-TileColor" content="#005ea0">
 	<meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
 	<meta name="theme-color" content="#005ea0">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://*; child-src 'none';">
 </head>
 
 <body>
