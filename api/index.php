@@ -27,22 +27,28 @@ $limit = !empty($_GET["limit"]) ? (int)$_GET["limit"] : 50;
 
 $offset = !empty($_GET["pageNumber"]) && (int)$_GET["pageNumber"] > 1 ? (int)$_GET["pageNumber"] * $limit : 0;
 
-$query = "SELECT a.*, s.title serviceName, l.abbr langAbbr FROM articles a INNER JOIN services s ON a.serviceId = s.id INNER JOIN languages l ON a.languageId = l.id WHERE l.abbr = '$lang'";
+$query = "SELECT a.*, s.title serviceName, l.abbr langAbbr FROM articles a INNER JOIN services s ON a.serviceId = s.id INNER JOIN languages l ON a.languageId = l.id WHERE ";
 
-if (!empty($_GET["search"])) {
-	$items = explode(" ", strip_tags($_GET["search"]));
+if (!empty($_GET["photos"])) {
+	$query .= "isGallery = 1";
+} else {
+	$query .= "l.abbr = '$lang'";
 
-	$search = "";
-	foreach ($items as $item) {
-		if (!empty($search)) {
-			$search .= " OR ";
+	if (!empty($_GET["search"])) {
+		$items = explode(" ", strip_tags($_GET["search"]));
+
+		$search = "";
+		foreach ($items as $item) {
+			if (!empty($search)) {
+				$search .= " OR ";
+			}
+			$search .= "a.title LIKE '%{$item}%' OR a.summary LIKE '%{$item}%'";
 		}
-		$search .= "a.title LIKE '%{$item}%' OR a.summary LIKE '%{$item}%'";
-	}
 
-	$query .= "AND ($search)";
-} else if (!empty($_GET["service"])) {
-	$query .= "AND serviceId = '" . (int)$_GET["service"] . "'";
+		$query .= " AND ($search)";
+	} else if (!empty($_GET["service"])) {
+		$query .= " AND serviceId = '" . (int)$_GET["service"] . "'";
+	}
 }
 
 $query .= " ORDER BY created DESC LIMIT $limit OFFSET $offset";

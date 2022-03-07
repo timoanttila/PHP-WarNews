@@ -1,1 +1,1 @@
-Sitemap: https://api.warnews.info/sitemap.xml
+Sitemap: https://warnews.info/sitemap.xml
