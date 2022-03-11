@@ -25,9 +25,9 @@ $lang = !empty($_GET["lang"]) && in_array($_GET["lang"], ["fi", "en"]) ?
 
 $limit = !empty($_GET["limit"]) ? (int)$_GET["limit"] : 50;
 
-$offset = !empty($_GET["pageNumber"]) && (int)$_GET["pageNumber"] > 1 ? (int)$_GET["pageNumber"] * $limit : 0;
+$pageNumber = !empty($_GET["pageNumber"]) ? (int)$_GET["pageNumber"] : 1;
 
-$query = "SELECT a.*, s.title serviceName, l.abbr langAbbr FROM articles a INNER JOIN services s ON a.serviceId = s.id INNER JOIN languages l ON a.languageId = l.id WHERE ";
+$query = "FROM articles a INNER JOIN services s ON a.serviceId = s.id INNER JOIN languages l ON a.languageId = l.id WHERE ";
 
 if (!empty($_GET["photos"])) {
 	$query .= "isGallery = 1";
@@ -51,22 +51,44 @@ if (!empty($_GET["photos"])) {
 	}
 }
 
-$query .= " ORDER BY created DESC LIMIT $limit OFFSET $offset";
+$query .= " ORDER BY created DESC";
 
-// Sending a request to the database
-$result = db($query);
+$result = db("SELECT count(a.id) totalCount $query");
 
 if ($result->num_rows == 0) {
 	header("HTTP/1.1 204 No Content");
 	die();
 }
 
-$data = [];
+$item = $result->fetch_all(MYSQLI_ASSOC);
+$item = array_shift($item);
+
+$data = [
+	"articles" => [],
+	"totalCount" => (int)$item["totalCount"],
+	"pageSize" => $limit,
+	"currentPage" => $pageNumber
+];
+
+$data["totalPages"] = $data["totalCount"] > $data["pageSize"] ? ceil($data["totalCount"] / $data["pageSize"]) : 1;
+
+if ($data["totalPages"] > $data["currentPage"]) {
+	$data["nextPage"] = true;
+}
+
+if ($data["currentPage"] > 1) {
+	$data["previousPage"] = true;
+}
+
+$offset = $pageNumber > 1 ? $pageNumber * ($limit - 1) : 0;
+
+// Sending a request to the database
+$result = db("SELECT a.*, s.title serviceName, l.abbr langAbbr $query LIMIT $limit OFFSET $offset");
 
 while ($row = $result->fetch_assoc()) {
 	$date = strtotime($row["created"]);
 
-	$data[] = [
+	$data["articles"][] = [
 		"id" => (int)$row["id"],
 		"title" => $row["title"],
 		"summary" => $row["summary"],
