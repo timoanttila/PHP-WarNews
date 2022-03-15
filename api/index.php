@@ -64,23 +64,25 @@ $item = $result->fetch_all(MYSQLI_ASSOC);
 $item = array_shift($item);
 
 $data = [
-	"articles" => [],
-	"totalCount" => (int)$item["totalCount"],
-	"pageSize" => $limit,
-	"currentPage" => $pageNumber
+	"info" => [
+		"totalCount" => (int)$item["totalCount"],
+		"pageSize" => $limit,
+		"currentPage" => $pageNumber
+	],
+	"articles" => []
 ];
 
-$data["totalPages"] = $data["totalCount"] > $data["pageSize"] ? ceil($data["totalCount"] / $data["pageSize"]) : 1;
+$data["info"]["totalPages"] = $data["info"]["totalCount"] > $data["info"]["pageSize"] ? ceil($data["info"]["totalCount"] / $data["info"]["pageSize"]) : 1;
 
-if ($data["totalPages"] > $data["currentPage"]) {
-	$data["nextPage"] = true;
+if ($data["info"]["totalPages"] > $data["info"]["currentPage"]) {
+	$data["info"]["nextPage"] = 1;
 }
 
-if ($data["currentPage"] > 1) {
-	$data["previousPage"] = true;
+if ($data["info"]["currentPage"] > 1) {
+	$data["info"]["previousPage"] = 1;
 }
 
-$offset = $pageNumber > 1 ? $pageNumber * ($limit - 1) : 0;
+$offset = $pageNumber > 1 ? ($pageNumber - 1) * $limit : 0;
 
 // Sending a request to the database
 $result = db("SELECT a.*, s.title serviceName, l.abbr langAbbr $query LIMIT $limit OFFSET $offset");
