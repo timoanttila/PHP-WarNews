@@ -102,8 +102,7 @@ while ($row = $result->fetch_assoc()) {
 		"created" => [
 			"datetime" => date("Y-m-d\TH:i:s", $date),
 			"view" => date("d.m.Y H:i", $date)
-		],
-		"modified" => $row["updated"]
+		]
 	];
 }
 
